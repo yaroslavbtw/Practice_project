@@ -21,8 +21,23 @@ public class RecipeDAOImpl implements RecipeDAO {
     public RecipeDAOImpl(Connection connection) {
         try {
             createStatement = connection.prepareStatement("INSERT INTO \"Recipes\" (uuid, dt_create, dt_update, title, category_id, description) VALUES (?, ?, ?, ?, ?, ?)");
-            readAllStatement = connection.prepareStatement("SELECT * FROM \"Recipes\"");
-            readByIdStatement = connection.prepareStatement("SELECT * FROM \"Recipes\" WHERE uuid = ?");
+            readAllStatement = connection.prepareStatement("""
+                    SELECT r.*, array_agg(p.uuid || ', ' || p.title || ', ' || p.calories || ', ' || p.proteins || ', ' || p.fats || ', ' || p.carbohydrates) AS composition, sum(pm.weight) as weight,
+                           sum(p.calories) as calories, sum(p.proteins) as proteins, sum(p.fats) as fats, sum(p.carbohydrates) as carbohydrates, c.title as category
+                    FROM "Recipes" r
+                             LEFT JOIN "Product_modal" pm ON pm.recipe_id = r.uuid
+                             LEFT JOIN "Products" p ON pm.product_id = p.uuid
+                             LEFT JOIN "Categories" c ON r.category_id = c.uuid
+                    GROUP BY r.uuid, c.title""");
+            readByIdStatement = connection.prepareStatement("""
+                    SELECT r.*, array_agg(p.uuid || ', ' || p.title || ', ' || p.calories || ', ' || p.proteins || ', ' || p.fats || ', ' || p.carbohydrates) AS composition, sum(pm.weight) as weight,
+                           sum(p.calories) as calories, sum(p.proteins) as proteins, sum(p.fats) as fats, sum(p.carbohydrates) as carbohydrates, c.title as category
+                    FROM "Recipes" r
+                             LEFT JOIN "Product_modal" pm ON pm.recipe_id = r.uuid
+                             LEFT JOIN "Products" p ON pm.product_id = p.uuid
+                             LEFT JOIN "Categories" c ON r.category_id = c.uuid
+                    WHERE r.uuid = ?
+                    GROUP BY r.uuid, c.title""");
             updateStatement = connection.prepareStatement("UPDATE \"Recipes\" SET dt_update = ?, title = ?, category_id = ?, description = ? WHERE uuid = ?");
             deleteStatement = connection.prepareStatement("DELETE FROM \"Recipes\" WHERE uuid = ?");
         } catch (SQLException e) {
@@ -57,7 +72,8 @@ public class RecipeDAOImpl implements RecipeDAO {
                         result.getTimestamp("dt_update"),
                         result.getString("title"),
                         result.getObject("category_id", UUID.class),
-                        result.getString("description")
+                        result.getString("description"),
+                        result.getArray("composition")
                 );
                 recipes.add(recipe);
             }
@@ -79,7 +95,8 @@ public class RecipeDAOImpl implements RecipeDAO {
                         result.getTimestamp("dt_update"),
                         result.getString("title"),
                         result.getObject("category_id", UUID.class),
-                        result.getString("description")
+                        result.getString("description"),
+                        result.getArray("composition")
                 );
             } else {
                 return null;
