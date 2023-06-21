@@ -1,5 +1,6 @@
-package org.project.DAO;
+package org.project.DAO.Impl;
 
+import org.project.DAO.CategoryDAO;
 import org.project.entity.Category;
 
 import java.sql.Connection;

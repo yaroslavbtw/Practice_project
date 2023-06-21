@@ -1,6 +1,9 @@
 package org.project.entity;
 
+import java.sql.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Recipe {
@@ -11,13 +14,16 @@ public class Recipe {
     private UUID categoryId;
     private String description;
 
-    public Recipe(UUID uuid, Timestamp dtCreate, Timestamp dtUpdate, String title, UUID categoryId, String description) {
+    private Array composition;
+
+    public Recipe(UUID uuid, Timestamp dtCreate, Timestamp dtUpdate, String title, UUID categoryId, String description, Array composition) {
         this.uuid = uuid;
         this.dtCreate = dtCreate;
         this.dtUpdate = dtUpdate;
         this.title = title;
         this.categoryId = categoryId;
         this.description = description;
+        this.composition = composition;
     }
 
     public UUID getUuid() {
@@ -66,5 +72,13 @@ public class Recipe {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Array getComposition() {
+        return composition;
+    }
+
+    public void setComposition(Array composition) {
+        this.composition = composition;
     }
 }

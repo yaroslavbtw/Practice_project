@@ -1,5 +1,6 @@
-package org.project.DAO;
+package org.project.DAO.Impl;
 
+import org.project.DAO.UserDAO;
 import org.project.entity.User;
 
 import java.sql.Connection;

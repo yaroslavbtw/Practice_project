@@ -1,5 +1,6 @@
-package org.project.DAO;
+package org.project.DAO.Impl;
 
+import org.project.DAO.ProductModalDAO;
 import org.project.entity.ProductModal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,11 +19,11 @@ public class ProductModalDAOImpl implements ProductModalDAO {
 
     public ProductModalDAOImpl(Connection connection) {
         try {
-            createStatement = connection.prepareStatement("INSERT INTO \"ProductModals\" (uuid, recipe_id, product_id, weight) VALUES (?, ?, ?, ?)");
-            readAllStatement = connection.prepareStatement("SELECT * FROM \"ProductModals\"");
-            readByIdStatement = connection.prepareStatement("SELECT * FROM \"ProductModals\" WHERE uuid = ?");
-            updateStatement = connection.prepareStatement("UPDATE \"ProductModals\" SET recipe_id = ?, product_id = ?, weight = ? WHERE uuid = ?");
-            deleteStatement = connection.prepareStatement("DELETE FROM \"ProductModals\" WHERE uuid = ?");
+            createStatement = connection.prepareStatement("INSERT INTO \"Product_modal\" (uuid, recipe_id, product_id, weight) VALUES (?, ?, ?, ?)");
+            readAllStatement = connection.prepareStatement("SELECT * FROM \"Product_modal\"");
+            readByIdStatement = connection.prepareStatement("SELECT * FROM \"Product_modal\" WHERE uuid = ?");
+            updateStatement = connection.prepareStatement("UPDATE \"Product_modal\" SET recipe_id = ?, product_id = ?, weight = ? WHERE uuid = ?");
+            deleteStatement = connection.prepareStatement("DELETE FROM \"Product_modal\" WHERE uuid = ?");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

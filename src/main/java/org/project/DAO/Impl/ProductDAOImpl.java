@@ -1,4 +1,5 @@
-package org.project.DAO;
+package org.project.DAO.Impl;
+import org.project.DAO.ProductDAO;
 import org.project.entity.Product;
 
 import java.sql.Connection;

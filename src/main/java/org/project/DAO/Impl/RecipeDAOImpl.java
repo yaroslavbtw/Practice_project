@@ -1,5 +1,6 @@
-package org.project.DAO;
+package org.project.DAO.Impl;
 
+import org.project.DAO.RecipeDAO;
 import org.project.entity.Recipe;
 
 import java.sql.Connection;

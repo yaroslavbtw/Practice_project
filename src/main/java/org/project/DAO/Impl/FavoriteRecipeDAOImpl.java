@@ -1,4 +1,5 @@
-package org.project.DAO;
+package org.project.DAO.Impl;
+import org.project.DAO.FavoriteRecipeDAO;
 import org.project.entity.FavoriteRecipe;
 
 import java.sql.Connection;
