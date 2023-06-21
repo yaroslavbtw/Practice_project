@@ -255,9 +255,9 @@ public class Main {
         }
     }
 
-    private static void favoriteRecipeMenu(Connection connection) {
+    private static void favoriteRecipeMenu(Connection connection) throws SQLException {
         FavoriteRecipeDAO favoriteRecipeDAO = new FavoriteRecipeDAOImpl(connection);
-
+        UserDAO userDAO = new UserDAOImpl(connection);
         while (true) {
             System.out.println();
             System.out.println("Favorite Recipes");
@@ -278,18 +278,25 @@ public class Main {
                 case 2 -> {
                     List<FavoriteRecipe> favoriteRecipes = favoriteRecipeDAO.readAll();
                     for (FavoriteRecipe fr : favoriteRecipes) {
-                        System.out.println(fr.getUuid() + " | " + fr.getUserId() + " | " + fr.getRecipeId());
+                        User userById = userDAO.readById(fr.getUserId().toString());
+                        System.out.println(fr.getUuid() + " | " + userById.getMail() + " | " + fr.getRecipeId());
                     }
                 }
                 case 3 -> {
                     System.out.println("Enter user ID:");
                     String userId = scanner.next();
-                    FavoriteRecipe favoriteRecipeByUserId = favoriteRecipeDAO.readById(userId);
-                    if (favoriteRecipeByUserId != null) {
-                        System.out.println(favoriteRecipeByUserId.getUuid() + " | " + favoriteRecipeByUserId.getUserId()
-                                + " | " + favoriteRecipeByUserId.getRecipeId());
-                    } else {
-                        System.out.println("No favorite recipe found for user with ID: " + userId);
+
+                    PreparedStatement readByIdStatement = connection.prepareStatement("SELECT * FROM \"Favorite_recipes\" WHERE user_id = ?");
+                    readByIdStatement.setObject(1, UUID.fromString(userId));
+                    ResultSet result = readByIdStatement.executeQuery();
+
+                    if (result.next()) {
+                        FavoriteRecipe favoriteRecipesByUserId = new FavoriteRecipe(
+                                result.getObject("uuid", UUID.class),
+                                result.getObject("recipe_id", UUID.class),
+                                result.getObject("user_id", UUID.class));
+                        System.out.println(favoriteRecipesByUserId.getUuid() + " | " + favoriteRecipesByUserId.getUserId()
+                                + " | " + favoriteRecipesByUserId.getRecipeId());
                     }
                 }
                 case 4 -> {
