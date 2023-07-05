@@ -1,9 +1,12 @@
 package com.practice.practiceproj.controller;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.practice.practiceproj.core.dtos.user.UserLoginDTO;
 import com.practice.practiceproj.core.dtos.user.UserRegistrationDTO;
 import com.practice.practiceproj.service.IService.IPersonalAccountService;
 import jakarta.validation.Valid;
+import netscape.javascript.JSObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +38,9 @@ public class PersonalAccountController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO user) {
-        return ResponseEntity.status(200).body(service.login(user));
+        JsonObject responseJson = new JsonObject();
+        responseJson.add("token", new JsonPrimitive(service.login(user)));
+        return ResponseEntity.ok(responseJson.toString());
     }
 
     @GetMapping(path = "/me")
