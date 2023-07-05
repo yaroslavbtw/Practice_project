@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController()
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final IUserService service;

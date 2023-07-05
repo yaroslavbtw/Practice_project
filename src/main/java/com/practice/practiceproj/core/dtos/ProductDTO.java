@@ -1,6 +1,8 @@
 package com.practice.practiceproj.core.dtos;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.practice.practiceproj.converters.DoubleSerializer;
 import com.practice.practiceproj.core.BaseEssence;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,12 +27,15 @@ public class ProductDTO extends BaseEssence {
     private Integer calories;
     @NotNull
     @Positive
+    @JsonSerialize(using = DoubleSerializer.class)
     private Double proteins;
     @NotNull
     @Positive
+    @JsonSerialize(using = DoubleSerializer.class)
     private Double fats;
     @NotNull
     @Positive
+    @JsonSerialize(using = DoubleSerializer.class)
     private Double carbohydrates;
 
     public ProductDTO() {

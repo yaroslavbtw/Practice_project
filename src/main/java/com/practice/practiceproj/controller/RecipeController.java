@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/recipes")
 public class RecipeController {
 

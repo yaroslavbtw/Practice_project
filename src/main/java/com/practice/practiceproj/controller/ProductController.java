@@ -12,6 +12,7 @@ import com.practice.practiceproj.core.dtos.ProductDTO;
 import java.util.UUID;
 
 @RestController()
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductRepository repository;

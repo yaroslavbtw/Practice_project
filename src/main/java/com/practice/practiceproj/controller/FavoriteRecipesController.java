@@ -11,6 +11,7 @@ import com.practice.practiceproj.service.IService.IFavoriteRecipesService;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/favorite_recipes")
 public class FavoriteRecipesController {
     private final IFavoriteRecipesService service;
